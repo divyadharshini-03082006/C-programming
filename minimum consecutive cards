@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <string.h>
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+int minimumCardPickup(int* cards, int cardsSize) {
+    static int last_seen[1000001];
+    memset(last_seen, -1, sizeof(last_seen));
+    int min_cards = 100005;
+    for (int i = 0; i < cardsSize; i++) {
+        int card_val = cards[i];
+        if (last_seen[card_val] != -1) {
+            int current_distance = i - last_seen[card_val] + 1;
+            min_cards = MIN(min_cards, current_distance);
+        }
+        last_seen[card_val] = i;
+    }
+    return (min_cards == 100005) ? -1 : min_cards;
+}
