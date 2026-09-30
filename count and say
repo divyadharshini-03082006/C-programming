@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+char* countAndSay(int n) {
+    char* current_str = (char*)malloc(2 * sizeof(char));
+    strcpy(current_str, "1");
+    for (int i = 1; i < n; i++) {
+        char* next_str = (char*)malloc(50000 * sizeof(char));
+        int next_idx = 0;
+        int len = strlen(current_str);
+        int j = 0;
+        while (j < len) {
+            int count = 1;
+            while (j + 1 < len && current_str[j] == current_str[j + 1]) {
+                count++;
+                j++;
+            }
+            next_idx += sprintf(&next_str[next_idx], "%d%c", count, current_str[j]);
+            j++;
+        }
+        free(current_str);
+        current_str = next_str;
+    }
+    return current_str;
+}
