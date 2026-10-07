@@ -1,0 +1,28 @@
+#include <stdlib.h>
+#include <string.h>
+void bk(int* c, int n, int t, int s, int* p, int pSz, int*** r, int* rSz, int** cs, int* cap) {
+    if (!t) {
+        if (*rSz >= *cap) {
+            *cap *= 2;
+            *r = realloc(*r, *cap * sizeof(int*));
+            *cs = realloc(*cs, *cap * sizeof(int));
+        }
+        (*r)[*rSz] = malloc(pSz * sizeof(int));
+        memcpy((*r)[*rSz], p, pSz * sizeof(int));
+        (*cs)[(*rSz)++] = pSz;
+        return;
+    }
+    for (int i = s; i < n; i++) if (c[i] <= t) {
+        p[pSz] = c[i];
+        bk(c, n, t - c[i], i, p, pSz + 1, r, rSz, cs, cap);
+    }
+}
+int** combinationSum(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes) {
+    int cap = 150, *p = malloc(target * sizeof(int));
+    int** r = malloc(cap * sizeof(int*));
+    *returnColumnSizes = malloc(cap * sizeof(int));
+    *returnSize = 0;
+    bk(candidates, candidatesSize, target, 0, p, 0, &r, returnSize, returnColumnSizes, &cap);
+    free(p);
+    return r;
+}
