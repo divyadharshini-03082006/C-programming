@@ -1,0 +1,24 @@
+#include <stdbool.h>
+#include <stddef.h>
+bool isMatch(char* s, char* p) {
+    char *sIdx = s, *pIdx = p, *sStar = NULL, *pStar = NULL;
+    while (*sIdx) {
+        if (*pIdx == '?' || *pIdx == *sIdx) {
+            sIdx++;
+            pIdx++;
+        } 
+        else if (*pIdx == '*') {
+            pStar = pIdx++;
+            sStar = sIdx;
+        } 
+        else if (pStar) {
+            pIdx = pStar + 1;
+            sIdx = ++sStar;
+        } 
+        else {
+            return false;
+        }
+    }
+    while (*pIdx == '*') pIdx++;
+    return !*pIdx;
+}
